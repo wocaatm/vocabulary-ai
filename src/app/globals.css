@@ -24,3 +24,19 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+@keyframes play-button-scale {
+  0% {
+    transform: scale(0.9);
+  }
+  50% {
+    transform: scale(1.25);
+  }
+  100% {
+    transform: scale(0.9);
+  }
+}
+
+.play-button {
+  animation: play-button-scale 2s ease-in-out infinite;
+}
