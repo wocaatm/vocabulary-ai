@@ -98,7 +98,7 @@ export default function SceneViewer({
                     className="pointer-events-auto absolute -translate-x-1/2 -translate-y-1/2"
                     style={{ top: item.top, left: item.left }}
                   >
-                    <div className="relative rounded-md border border-black/10 bg-white/60 px-2 py-1 text-[12px] leading-tight text-neutral-900 shadow-md shadow-black/10 backdrop-blur-[2px]">
+                    <div className="relative rounded-md border border-black/10 bg-white/25 px-2 py-1 text-[12px] leading-tight text-neutral-900 shadow-md shadow-black/10 backdrop-blur-[2px]">
                       <button
                         type="button"
                         aria-label={`${item.chinese_word} 播放音频`}
@@ -110,13 +110,13 @@ export default function SceneViewer({
                         </svg>
                       </button>
                       <div className="flex flex-col items-center text-center">
-                        <p className="text-[10px] uppercase tracking-[0.2em] text-neutral-500/60 whitespace-nowrap">
+                        <p className="text-[10px] uppercase tracking-[0.2em] text-neutral-900 whitespace-nowrap">
                           {item.pinyin}
                         </p>
                         <p className="text-[12px] font-semibold text-neutral-900">
                           {item.chinese_word}
                         </p>
-                        <p className="text-[12px] text-neutral-600">
+                        <p className="text-[12px] text-neutral-900">
                           {item.english_word}
                         </p>
                       </div>
