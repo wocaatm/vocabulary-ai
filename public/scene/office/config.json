@@ -1,0 +1,159 @@
+{
+  "image_prompt": "一张儿童识字小报《办公室》，竖版 A4，学习小报版式，**整体加入柔和 3D 立体质感与适度景深，让画面更具沉浸性与空间层次**。---一、小报标题区（顶部）1. **大标题**：顶部居中展示标题：《办公室 识字小报》。2. **字体风格**：大字、醒目、卡通手写体、彩色描边。* **附加要求**：标题文字呈现轻微 3D 浮雕质感，边缘有柔和光影，让标题在页面顶部更突出。3. **装饰元素**：在标题周围添加与 办公室 强相关的贴纸风装饰，颜色鲜艳。* **附加要求**：装饰元素带轻微体积感，视觉上更像“贴在纸上的立体贴纸”。---二、小报主体（中间主画面）画面中心是一幅卡通插画风的完整「办公室」场景，**整体构图采用接近 2.5D–3D 效果的绘本风格**。### **整体气氛**明亮、温暖、积极、色彩高饱和，同时加入柔光、景深、体积感，让画面具有空间深度与沉浸感。### **构图要求**物体边界清晰，彼此之间留有贴标签的空白，避免拥挤。* **附加要求**：前景—中景—后景分层明显，使标注对象更清晰，场景更立体。### **场景分区** * **核心区 A (活动)**：表现 办公室 里的核心活动（孩子们或角色正在做什么），动作自然，带轻微 3D 立体造型感。* **核心区 B (工具)**：展示场景特有物品或工具，物体具备简单的 3D 形体光影（非写实，而是绘本级别的立体感）。* **核心区 C (环境)**：体现环境特征（建筑、植被、路标等），背景采用更低对比度与轻微景深，突出前景主体。### **引导角色**1 位可爱的卡通人物（办公室 的向导/工作人员），带轻微立体与阴影，使其具有温和的空间存在感，正在做欢迎或指引手势。---三、必画物体 (Generated Content)请务必在画面中清晰绘制以下物体，所有物体采用 **清晰轮廓 + 色块分明 + 轻度 3D 塑形**：1. **核心角色/设施 (Big Objects)**: 办公桌、电脑、老板椅、文件柜、打印机2. **常见物品/工具 (Small Items)**: 笔、笔记本、电话、水杯、键盘、鼠标、日历、订书机3. **环境/装饰 (Environment)**: 窗户、绿植、时钟、门---四、画风参数 (Style Parameters)* **风格**：Children's picture book style + Literacy tabloid aesthetic（儿童绘本风 + 识字小报风）* **附加风格要求**：Soft 3D shading, gentle depth-of-field, subtle volumetric lighting（柔和 3D、适度景深、轻体积光）* **色彩**：High Saturation, Warm Tone, Bright（高饱和、暖色、明亮）* **质量**：8k resolution, high detail, clean vector-like lines* **整体技术特征**：flat + soft 3D hybrid illustration（平面插画结合轻 3D 塑形）五、最重要的要求* **图中不要出现关于必画物体的描述**：包括汉字，英文，拼音的标注，不要有任何文字！！",
+  "vocabulary_list": [
+    {
+      "chinese_word": "办公桌",
+      "english_word": "Office desk",
+      "pinyin": "bàn gōng zhuō",
+      "top": "86.7%",
+      "left": "84.64%",
+      "position": "下",
+      "audio_filename": "office_desk"
+    },
+    {
+      "chinese_word": "电脑",
+      "english_word": "Computer",
+      "pinyin": "diàn nǎo",
+      "top": "57.6%",
+      "left": "66.53%",
+      "position": "左下",
+      "audio_filename": "computer"
+    },
+    {
+      "chinese_word": "老板椅",
+      "english_word": "Executive chair",
+      "pinyin": "lǎo bǎn yǐ",
+      "top": "91.02%",
+      "left": "49.03%",
+      "position": "左",
+      "audio_filename": "executive_chair"
+    },
+    {
+      "chinese_word": "文件柜",
+      "english_word": "Filing cabinet",
+      "pinyin": "wén jiàn guì",
+      "top": "35.31%",
+      "left": "45.16%",
+      "position": "右",
+      "audio_filename": "filing_cabinet"
+    },
+    {
+      "chinese_word": "打印机",
+      "english_word": "Printer",
+      "pinyin": "dǎ yìn jī",
+      "top": "59.09%",
+      "left": "7.46%",
+      "position": "左",
+      "audio_filename": "printer"
+    },
+    {
+      "chinese_word": "笔",
+      "english_word": "Pen",
+      "pinyin": "bǐ",
+      "top": "65.03%",
+      "left": "32.56%",
+      "position": "右上",
+      "audio_filename": "pen"
+    },
+    {
+      "chinese_word": "笔记本",
+      "english_word": "Notebook",
+      "pinyin": "bǐ jì běn",
+      "top": "74.04%",
+      "left": "54.57%",
+      "position": "上",
+      "audio_filename": "notebook"
+    },
+    {
+      "chinese_word": "电话",
+      "english_word": "Telephone",
+      "pinyin": "diàn huà",
+      "top": "67.64%",
+      "left": "78.04%",
+      "position": "右",
+      "audio_filename": "telephone"
+    },
+    {
+      "chinese_word": "水杯",
+      "english_word": "Water cup",
+      "pinyin": "shuǐ bēi",
+      "top": "78.79%",
+      "left": "73.98%",
+      "position": "右上",
+      "audio_filename": "water_cup"
+    },
+    {
+      "chinese_word": "键盘",
+      "english_word": "Keyboard",
+      "pinyin": "jiàn pán",
+      "top": "66.03%",
+      "left": "53.36%",
+      "position": "右下",
+      "audio_filename": "keyboard"
+    },
+    {
+      "chinese_word": "鼠标",
+      "english_word": "Mouse",
+      "pinyin": "shǔ biāo",
+      "top": "72.45%",
+      "left": "65.26%",
+      "position": "上",
+      "audio_filename": "mouse"
+    },
+    {
+      "chinese_word": "日历",
+      "english_word": "Calendar",
+      "pinyin": "rì lì",
+      "top": "64.65%",
+      "left": "95.15%",
+      "position": "下",
+      "audio_filename": "calendar"
+    },
+    {
+      "chinese_word": "订书机",
+      "english_word": "Stapler",
+      "pinyin": "dìng shū jī",
+      "top": "78.41%",
+      "left": "91.48%",
+      "position": "左",
+      "audio_filename": "stapler"
+    },
+    {
+      "chinese_word": "窗户",
+      "english_word": "Window",
+      "pinyin": "chuāng hù",
+      "top": "34.12%",
+      "left": "14.88%",
+      "position": "下",
+      "audio_filename": "window"
+    },
+    {
+      "chinese_word": "绿植",
+      "english_word": "Green plant",
+      "pinyin": "lǜ zhí",
+      "top": "44.99%",
+      "left": "74.01%",
+      "position": "左下",
+      "audio_filename": "green_plant"
+    },
+    {
+      "chinese_word": "时钟",
+      "english_word": "Clock",
+      "pinyin": "shí zhōng",
+      "top": "35.1%",
+      "left": "71.38%",
+      "position": "右",
+      "audio_filename": "clock"
+    },
+    {
+      "chinese_word": "门",
+      "english_word": "Door",
+      "pinyin": "mén",
+      "top": "47.54%",
+      "left": "92.39%",
+      "position": "上",
+      "audio_filename": "door"
+    }
+  ],
+  "generateAudio": true
+}
