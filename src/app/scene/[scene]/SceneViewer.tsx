@@ -72,8 +72,8 @@ export default function SceneViewer({
           </Link>
         </div>
 
-        <div className="relative overflow-x-auto sm:overflow-hidden rounded-3xl border border-white/10 bg-neutral-900 shadow-[0_30px_120px_-40px_rgba(0,0,0,0.8)]">
-          <div className="flex w-full justify-center">
+        <div className="relative overflow-x-auto rounded-3xl border border-white/10 bg-neutral-900 shadow-[0_30px_120px_-40px_rgba(0,0,0,0.8)]">
+          <div className="flex w-full justify-start sm:justify-center">
             <div className="relative inline-block w-full min-w-[900px]">
               {backgroundImage ? (
                 <Image
