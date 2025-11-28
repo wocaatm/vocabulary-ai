@@ -84,9 +84,6 @@ const DESIGN_WIDTH = 1120;
 // 卡片在设计稿下的基础尺寸系数（可调整卡片整体大小）
 const CARD_BASE_SCALE = 1.0;
 
-// PC 判断阈值（大于此值视为 PC）
-const PC_BREAKPOINT = 1024;
-
 // 可爱的 Loading 组件
 function CuteLoading({ sceneName, sceneIcon }: { sceneName: string; sceneIcon: string }) {
   const animals = ['🐼', '🦁', '🐘', '🦒', '🐵', '🦋', '🐠', '🐢'];
@@ -171,8 +168,6 @@ export default function SceneViewer({
   vocabulary,
 }: SceneViewerProps) {
   const audioCache = useRef<Record<string, HTMLAudioElement>>({});
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [containerSize, setContainerSize] = useState({ width: 0, height: 0 });
   const [shouldRotate, setShouldRotate] = useState(false);
   const [viewportSize, setViewportSize] = useState({ width: 0, height: 0 });
   const [isLoading, setIsLoading] = useState(true);
@@ -186,19 +181,21 @@ export default function SceneViewer({
   }, []);
 
   // 检测设备类型和是否需要旋转
-  // 逻辑：非 PC + 横屏（宽 > 高）时旋转页面，让 A4 纵向图片更好展示
+  // 逻辑：触摸设备（非 PC）+ 横屏（宽 > 高）时旋转页面，让 A4 纵向图片更好展示
   useEffect(() => {
     const checkDevice = () => {
       const width = window.innerWidth;
       const height = window.innerHeight;
-      const isPC = Math.max(width, height) >= PC_BREAKPOINT && !('ontouchstart' in window);
+      
+      // 判断是否为触摸设备（非 PC）
+      const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
       const isLandscape = width > height;
       
       setViewportSize({ width, height });
       
-      // 非 PC + 横屏时需要旋转（如 iPad 横握）
-      // 手机竖屏（高 > 宽）保持原样
-      setShouldRotate(!isPC && isLandscape);
+      // 触摸设备 + 横屏时需要翻转（iPad、平板横握等）
+      // 无论屏幕多大，只要是触摸设备且横屏就翻转
+      setShouldRotate(isTouchDevice && isLandscape);
     };
     
     checkDevice();
@@ -208,19 +205,6 @@ export default function SceneViewer({
       window.removeEventListener('resize', checkDevice);
       window.removeEventListener('orientationchange', checkDevice);
     };
-  }, []);
-
-  // 监听容器尺寸变化
-  useEffect(() => {
-    if (!containerRef.current) return;
-
-    const observer = new ResizeObserver((entries) => {
-      const { width, height } = entries[0].contentRect;
-      setContainerSize({ width, height });
-    });
-
-    observer.observe(containerRef.current);
-    return () => observer.disconnect();
   }, []);
 
   // 预加载所有音频文件
@@ -248,11 +232,6 @@ export default function SceneViewer({
       });
     };
   }, [vocabulary, slug]);
-
-  // 计算卡片缩放比例（与图片缩放保持同步）
-  const cardScale = containerSize.width > 0 
-    ? (containerSize.width / DESIGN_WIDTH) * CARD_BASE_SCALE
-    : CARD_BASE_SCALE;
 
   const handlePlay = useCallback((audioSrc: string) => {
     const cache = audioCache.current;
@@ -302,9 +281,6 @@ export default function SceneViewer({
               slug={slug}
               backgroundImage={backgroundImage}
               vocabulary={vocabulary}
-              containerRef={containerRef}
-              containerSize={containerSize}
-              cardScale={cardScale}
               handlePlay={handlePlay}
               onImageLoad={handleImageLoad}
               minHeight={viewportSize.width}
@@ -325,9 +301,6 @@ export default function SceneViewer({
         slug={slug}
         backgroundImage={backgroundImage}
         vocabulary={vocabulary}
-        containerRef={containerRef}
-        containerSize={containerSize}
-        cardScale={cardScale}
         handlePlay={handlePlay}
         onImageLoad={handleImageLoad}
       />
@@ -343,9 +316,6 @@ type SceneContentProps = {
   slug: string;
   backgroundImage: string | null;
   vocabulary: VocabularyItem[];
-  containerRef: React.RefObject<HTMLDivElement | null>;
-  containerSize: { width: number; height: number };
-  cardScale: number;
   handlePlay: (audioSrc: string) => void;
   onImageLoad: () => void;
   minHeight?: number;
@@ -358,13 +328,32 @@ function SceneContent({
   slug,
   backgroundImage,
   vocabulary,
-  containerRef,
-  containerSize,
-  cardScale,
   handlePlay,
   onImageLoad,
   minHeight,
 }: SceneContentProps) {
+  // 每个 SceneContent 实例管理自己的容器引用和尺寸
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [containerSize, setContainerSize] = useState({ width: 0, height: 0 });
+
+  // 监听容器尺寸变化
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    const observer = new ResizeObserver((entries) => {
+      const { width, height } = entries[0].contentRect;
+      setContainerSize({ width, height });
+    });
+
+    observer.observe(containerRef.current);
+    return () => observer.disconnect();
+  }, []);
+
+  // 计算卡片缩放比例（与图片缩放保持同步）
+  const cardScale = containerSize.width > 0 
+    ? (containerSize.width / DESIGN_WIDTH) * CARD_BASE_SCALE
+    : CARD_BASE_SCALE;
+
   // 如果没有背景图片，直接触发加载完成
   useEffect(() => {
     if (!backgroundImage) {
