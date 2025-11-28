@@ -5,154 +5,188 @@
       "chinese_word": "办公桌",
       "english_word": "Office desk",
       "pinyin": "bàn gōng zhuō",
-      "top": "86.7%",
-      "left": "84.64%",
-      "position": "下",
-      "audio_filename": "office_desk"
+      "audio_filename": "office_desk",
+      "top": "78%",
+      "left": "60%",
+      "cardTop": "86%",
+      "cardLeft": "60%",
+      "color": "#F4C488"
     },
     {
       "chinese_word": "电脑",
       "english_word": "Computer",
       "pinyin": "diàn nǎo",
-      "top": "57.6%",
-      "left": "66.53%",
-      "position": "左下",
-      "audio_filename": "computer"
+      "audio_filename": "computer",
+      "top": "58%",
+      "left": "65%",
+      "cardTop": "44%",
+      "cardLeft": "65%",
+      "color": "#8BCDF3"
     },
     {
       "chinese_word": "老板椅",
       "english_word": "Executive chair",
       "pinyin": "lǎo bǎn yǐ",
-      "top": "91.02%",
-      "left": "49.03%",
-      "position": "左",
-      "audio_filename": "executive_chair"
+      "audio_filename": "executive_chair",
+      "top": "75%",
+      "left": "42%",
+      "cardTop": "75%",
+      "cardLeft": "28%",
+      "color": "#F38B57"
     },
     {
       "chinese_word": "文件柜",
       "english_word": "Filing cabinet",
       "pinyin": "wén jiàn guì",
-      "top": "35.31%",
-      "left": "45.16%",
-      "position": "右",
-      "audio_filename": "filing_cabinet"
+      "audio_filename": "filing_cabinet",
+      "top": "40%",
+      "left": "53%",
+      "cardTop": "26%",
+      "cardLeft": "53%",
+      "color": "#E9CD9F"
     },
     {
       "chinese_word": "打印机",
       "english_word": "Printer",
       "pinyin": "dǎ yìn jī",
-      "top": "59.09%",
-      "left": "7.46%",
-      "position": "左",
-      "audio_filename": "printer"
+      "audio_filename": "printer",
+      "top": "55%",
+      "left": "10%",
+      "cardTop": "40%",
+      "cardLeft": "10%",
+      "color": "#DDE4E9"
     },
     {
       "chinese_word": "笔",
       "english_word": "Pen",
       "pinyin": "bǐ",
-      "top": "65.03%",
-      "left": "32.56%",
-      "position": "右上",
-      "audio_filename": "pen"
+      "audio_filename": "pen",
+      "top": "66%",
+      "left": "36%",
+      "cardTop": "58%",
+      "cardLeft": "32%",
+      "color": "#4A90E2"
     },
     {
       "chinese_word": "笔记本",
       "english_word": "Notebook",
       "pinyin": "bǐ jì běn",
-      "top": "74.04%",
-      "left": "54.57%",
-      "position": "上",
-      "audio_filename": "notebook"
+      "audio_filename": "notebook",
+      "top": "72%",
+      "left": "54%",
+      "cardTop": "81%",
+      "cardLeft": "48%",
+      "color": "#FFF9E5"
     },
     {
       "chinese_word": "电话",
       "english_word": "Telephone",
       "pinyin": "diàn huà",
-      "top": "67.64%",
-      "left": "78.04%",
-      "position": "右",
-      "audio_filename": "telephone"
+      "audio_filename": "telephone",
+      "top": "70%",
+      "left": "80%",
+      "cardTop": "60%",
+      "cardLeft": "85%",
+      "color": "#BDC3C7"
     },
     {
       "chinese_word": "水杯",
       "english_word": "Water cup",
       "pinyin": "shuǐ bēi",
-      "top": "78.79%",
-      "left": "73.98%",
-      "position": "右上",
-      "audio_filename": "water_cup"
+      "audio_filename": "water_cup",
+      "top": "76%",
+      "left": "76%",
+      "cardTop": "85%",
+      "cardLeft": "78%",
+      "color": "#F5E4C8"
     },
     {
       "chinese_word": "键盘",
       "english_word": "Keyboard",
       "pinyin": "jiàn pán",
-      "top": "66.03%",
-      "left": "53.36%",
-      "position": "右下",
-      "audio_filename": "keyboard"
+      "audio_filename": "keyboard",
+      "top": "68%",
+      "left": "60%",
+      "cardTop": "62%",
+      "cardLeft": "70%",
+      "color": "#50555C"
     },
     {
       "chinese_word": "鼠标",
       "english_word": "Mouse",
       "pinyin": "shǔ biāo",
-      "top": "72.45%",
-      "left": "65.26%",
-      "position": "上",
-      "audio_filename": "mouse"
+      "audio_filename": "mouse",
+      "top": "74%",
+      "left": "67%",
+      "cardTop": "82%",
+      "cardLeft": "68%",
+      "color": "#FFFFFF"
     },
     {
       "chinese_word": "日历",
       "english_word": "Calendar",
       "pinyin": "rì lì",
-      "top": "64.65%",
-      "left": "95.15%",
-      "position": "下",
-      "audio_filename": "calendar"
+      "audio_filename": "calendar",
+      "top": "68%",
+      "left": "90%",
+      "cardTop": "55%",
+      "cardLeft": "92%",
+      "color": "#E74C3C"
     },
     {
       "chinese_word": "订书机",
       "english_word": "Stapler",
       "pinyin": "dìng shū jī",
-      "top": "78.41%",
-      "left": "91.48%",
-      "position": "左",
-      "audio_filename": "stapler"
+      "audio_filename": "stapler",
+      "top": "75%",
+      "left": "88%",
+      "cardTop": "85%",
+      "cardLeft": "90%",
+      "color": "#3498DB"
     },
     {
       "chinese_word": "窗户",
       "english_word": "Window",
       "pinyin": "chuāng hù",
-      "top": "34.12%",
-      "left": "14.88%",
-      "position": "下",
-      "audio_filename": "window"
+      "audio_filename": "window",
+      "top": "35%",
+      "left": "25%",
+      "cardTop": "20%",
+      "cardLeft": "25%",
+      "color": "#A9DDF8"
     },
     {
       "chinese_word": "绿植",
       "english_word": "Green plant",
       "pinyin": "lǜ zhí",
-      "top": "44.99%",
-      "left": "74.01%",
-      "position": "左下",
-      "audio_filename": "green_plant"
+      "audio_filename": "green_plant",
+      "top": "46%",
+      "left": "72%",
+      "cardTop": "36%",
+      "cardLeft": "78%",
+      "color": "#5CAF56"
     },
     {
       "chinese_word": "时钟",
       "english_word": "Clock",
       "pinyin": "shí zhōng",
-      "top": "35.1%",
-      "left": "71.38%",
-      "position": "右",
-      "audio_filename": "clock"
+      "audio_filename": "clock",
+      "top": "32%",
+      "left": "75%",
+      "cardTop": "22%",
+      "cardLeft": "75%",
+      "color": "#ECF0F1"
     },
     {
       "chinese_word": "门",
       "english_word": "Door",
       "pinyin": "mén",
-      "top": "47.54%",
-      "left": "92.39%",
-      "position": "上",
-      "audio_filename": "door"
+      "audio_filename": "door",
+      "top": "45%",
+      "left": "93%",
+      "cardTop": "35%",
+      "cardLeft": "93%",
+      "color": "#D68910"
     }
   ],
   "generateAudio": true

@@ -1,142 +1,194 @@
 {
   "image_prompt": "一张儿童识字小报《水族馆》，竖版 A4，学习小报版式，整体加入柔和 3D 立体质感与适度景深，让画面更具沉浸性与空间层次。小报标题区（顶部）大标题：顶部居中展示标题：《水族馆 识字小报》。字体风格：大字、醒目、卡通手写体、彩色描边。附加要求：标题文字呈现轻微 3D 浮雕质感，边缘有柔和光影，让标题在页面顶部更突出。装饰元素：在标题周围添加与 水族馆 强相关的贴纸风装饰，颜色鲜艳。附加要求：装饰元素带轻微体积感，视觉上更像“贴在纸上的立体贴纸”。小报主体（中间主画面）画面中心是一幅卡通插画风的完整「水族馆」场景，整体构图采用接近 2.5D–3D 效果的绘本风格。整体气氛明亮、温暖、积极、色彩高饱和，同时加入柔光、景深、体积感，让画面具有空间深度与沉浸感。构图要求物体边界清晰，彼此之间留有贴标签的空白，避免拥挤。附加要求：前景—中景—后景分层明显，使标注对象更清晰，场景更立体。场景分区：核心区 A (活动)：表现 水族馆 里的核心活动（孩子们或角色正在做什么），动作自然，带轻微 3D 立体造型感。核心区 B (工具)：展示场景特有物品或工具，物体具备简单的 3D 形体光影（非写实，而是绘本级别的立体感）。核心区 C (环境)：体现环境特征（建筑、植被、路标等），背景采用更低对比度与轻微景深，突出前景主体。引导角色：1 位可爱的卡通人物（水族馆 的向导/工作人员），带轻微立体与阴影，使其具有温和的空间存在感，正在做欢迎或指引手势。必画物体：请务必在画面中清晰绘制以下物体，所有物体采用 清晰轮廓 + 色块分明 + 轻度 3D 塑形：核心角色/设施 (Big Objects): 海豚, 鲨鱼, 企鹅, 潜水员, 大型水族箱。常见物品/工具 (Small Items): 小鱼, 海星, 珊瑚, 水草, 贝壳, 水母, 海龟, 章鱼。环境/装饰 (Environment): 玻璃隧道, 礁石, 指示牌, 入口。画风参数：风格：Children's picture book style + Literacy tabloid aesthetic（儿童绘本风 + 识字小报风）。附加风格要求：Soft 3D shading, gentle depth-of-field, subtle volumetric lighting（柔和 3D、适度景深、轻体积光）。色彩：High Saturation, Warm Tone, Bright（高饱和、暖色、明亮）。质量：8k resolution, high detail, clean vector-like lines。整体技术特征：flat + soft 3D hybrid illustration（平面插画结合轻 3D 塑形）。最重要的要求：图中不要出现关于必画物体的描述：包括汉字，英文，拼音的标注，不要有任何文字！！",
-  "vocabulary_list": [
-    {
-      "chinese_word": "海豚",
-      "english_word": "Dolphin",
-      "pinyin": "hǎi tún",
-      "top": "74.89%",
-      "left": "25.5%",
-      "audio_filename": "dolphin"
-    },
-    {
-      "chinese_word": "鲨鱼",
-      "english_word": "Shark",
-      "pinyin": "shā yú",
-      "top": "65.54%",
-      "left": "41.94%",
-      "audio_filename": "shark"
-    },
-    {
-      "chinese_word": "企鹅",
-      "english_word": "Penguin",
-      "pinyin": "qǐ é",
-      "top": "71.15%",
-      "left": "8.46%",
-      "audio_filename": "penguin"
-    },
-    {
-      "chinese_word": "潜水员",
-      "english_word": "Diver",
-      "pinyin": "qián shuǐ yuán",
-      "top": "86.27%",
-      "left": "70.24%",
-      "audio_filename": "diver"
-    },
-    {
-      "chinese_word": "大型水族箱",
-      "english_word": "Large Aquarium Tank",
-      "pinyin": "dà xíng shuǐ zú xiāng",
-      "top": "61.13%",
-      "left": "76.33%",
-      "audio_filename": "large_aquarium_tank"
-    },
-    {
-      "chinese_word": "小鱼",
-      "english_word": "Small Fish",
-      "pinyin": "xiǎo yú",
-      "top": "66.22%",
-      "left": "56.55%",
-      "audio_filename": "small_fish"
-    },
-    {
-      "chinese_word": "海星",
-      "english_word": "Starfish",
-      "pinyin": "hǎi xīng",
-      "top": "92.55%",
-      "left": "53.2%",
-      "audio_filename": "starfish"
-    },
-    {
-      "chinese_word": "珊瑚",
-      "english_word": "Coral",
-      "pinyin": "shān hú",
-      "top": "94.08%",
-      "left": "20.63%",
-      "audio_filename": "coral"
-    },
-    {
-      "chinese_word": "水草",
-      "english_word": "Seaweed",
-      "pinyin": "shuǐ cǎo",
-      "top": "88.65%",
-      "left": "8.76%",
-      "audio_filename": "seaweed"
-    },
-    {
-      "chinese_word": "贝壳",
-      "english_word": "Seashell",
-      "pinyin": "bèi ké",
-      "top": "93.57%",
-      "left": "37.07%",
-      "audio_filename": "seashell"
-    },
-    {
-      "chinese_word": "水母",
-      "english_word": "Jellyfish",
-      "pinyin": "shuǐ mǔ",
-      "top": "40.91%",
-      "left": "5.72%",
-      "audio_filename": "jellyfish"
-    },
-    {
-      "chinese_word": "海龟",
-      "english_word": "Sea Turtle",
-      "pinyin": "hǎi guī",
-      "top": "29.7%",
-      "left": "87.59%",
-      "audio_filename": "sea_turtle"
-    },
-    {
-      "chinese_word": "章鱼",
-      "english_word": "Octopus",
-      "pinyin": "zhāng yú",
-      "top": "49.92%",
-      "left": "85.16%",
-      "audio_filename": "octopus"
-    },
-    {
-      "chinese_word": "玻璃隧道",
-      "english_word": "Glass Tunnel",
-      "pinyin": "bō lí suì dào",
-      "top": "48.56%",
-      "left": "25.81%",
-      "audio_filename": "glass_tunnel"
-    },
-    {
-      "chinese_word": "礁石",
-      "english_word": "Reef",
-      "pinyin": "jiāo shí",
-      "top": "40.23%",
-      "left": "62.02%",
-      "audio_filename": "reef"
-    },
-    {
-      "chinese_word": "指示牌",
-      "english_word": "Signpost",
-      "pinyin": "zhǐ shì pái",
-      "top": "49.07%",
-      "left": "62.02%",
-      "audio_filename": "signpost"
-    },
-    {
-      "chinese_word": "入口",
-      "english_word": "Entrance",
-      "pinyin": "rù kǒu",
-      "top": "33.44%",
-      "left": "20.02%",
-      "audio_filename": "entrance"
-    }
+  "vocabulary_list": 
+  [
+  {
+  "chinese_word": "海豚",
+  "english_word": "Dolphin",
+  "pinyin": "hǎi tún",
+  "audio_filename": "dolphin",
+  "top": "76%",
+  "left": "28%",
+  "cardTop": "65%",
+  "cardLeft": "20%",
+  "color": "#6FBBE8"
+  },
+  {
+  "chinese_word": "鲨鱼",
+  "english_word": "Shark",
+  "pinyin": "shā yú",
+  "audio_filename": "shark",
+  "top": "65%",
+  "left": "37%",
+  "cardTop": "56%",
+  "cardLeft": "37%",
+  "color": "#708FA3"
+  },
+  {
+  "chinese_word": "企鹅",
+  "english_word": "Penguin",
+  "pinyin": "qǐ é",
+  "audio_filename": "penguin",
+  "top": "68%",
+  "left": "12%",
+  "cardTop": "58%",
+  "cardLeft": "12%",
+  "color": "#333333"
+  },
+  {
+  "chinese_word": "潜水员",
+  "english_word": "Diver",
+  "pinyin": "qián shuǐ yuán",
+  "audio_filename": "diver",
+  "top": "80%",
+  "left": "72%",
+  "cardTop": "70%",
+  "cardLeft": "62%",
+  "color": "#4B5C85"
+  },
+  {
+  "chinese_word": "大型水族箱",
+  "english_word": "Large Aquarium Tank",
+  "pinyin": "dà xíng shuǐ zú xiāng",
+  "audio_filename": "large_aquarium_tank",
+  "top": "70%",
+  "left": "85%",
+  "cardTop": "55%",
+  "cardLeft": "85%",
+  "color": "#89CFF0"
+  },
+  {
+  "chinese_word": "小鱼",
+  "english_word": "Small Fish",
+  "pinyin": "xiǎo yú",
+  "audio_filename": "small_fish",
+  "top": "68%",
+  "left": "68%",
+  "cardTop": "60%",
+  "cardLeft": "60%",
+  "color": "#F4C542"
+  },
+  {
+  "chinese_word": "海星",
+  "english_word": "Starfish",
+  "pinyin": "hǎi xīng",
+  "audio_filename": "starfish",
+  "top": "94%",
+  "left": "56%",
+  "cardTop": "86%",
+  "cardLeft": "56%",
+  "color": "#FFA07A"
+  },
+  {
+  "chinese_word": "珊瑚",
+  "english_word": "Coral",
+  "pinyin": "shān hú",
+  "audio_filename": "coral",
+  "top": "92%",
+  "left": "90%",
+  "cardTop": "82%",
+  "cardLeft": "90%",
+  "color": "#FF9999"
+  },
+  {
+  "chinese_word": "水草",
+  "english_word": "Seaweed",
+  "pinyin": "shuǐ cǎo",
+  "audio_filename": "seaweed",
+  "top": "88%",
+  "left": "8%",
+  "cardTop": "80%",
+  "cardLeft": "16%",
+  "color": "#6B8E23"
+  },
+  {
+  "chinese_word": "贝壳",
+  "english_word": "Seashell",
+  "pinyin": "bèi ké",
+  "audio_filename": "seashell",
+  "top": "95%",
+  "left": "38%",
+  "cardTop": "87%",
+  "cardLeft": "38%",
+  "color": "#D8BFD8"
+  },
+  {
+  "chinese_word": "水母",
+  "english_word": "Jellyfish",
+  "pinyin": "shuǐ mǔ",
+  "audio_filename": "jellyfish",
+  "top": "45%",
+  "left": "7%",
+  "cardTop": "45%",
+  "cardLeft": "18%",
+  "color": "#E0B0FF"
+  },
+  {
+  "chinese_word": "海龟",
+  "english_word": "Sea Turtle",
+  "pinyin": "hǎi guī",
+  "audio_filename": "sea_turtle",
+  "top": "33%",
+  "left": "86%",
+  "cardTop": "28%",
+  "cardLeft": "80%",
+  "color": "#8FBC8F"
+  },
+  {
+  "chinese_word": "章鱼",
+  "english_word": "Octopus",
+  "pinyin": "zhāng yú",
+  "audio_filename": "octopus",
+  "top": "48%",
+  "left": "88%",
+  "cardTop": "48%",
+  "cardLeft": "76%",
+  "color": "#FA8072"
+  },
+  {
+  "chinese_word": "玻璃隧道",
+  "english_word": "Glass Tunnel",
+  "pinyin": "bō lí suì dào",
+  "audio_filename": "glass_tunnel",
+  "top": "52%",
+  "left": "30%",
+  "cardTop": "42%",
+  "cardLeft": "30%",
+  "color": "#E0FFFF"
+  },
+  {
+  "chinese_word": "礁石",
+  "english_word": "Reef",
+  "pinyin": "jiāo shí",
+  "audio_filename": "reef",
+  "top": "40%",
+  "left": "68%",
+  "cardTop": "32%",
+  "cardLeft": "68%",
+  "color": "#A0522D"
+  },
+  {
+  "chinese_word": "指示牌",
+  "english_word": "Signpost",
+  "pinyin": "zhǐ shì pái",
+  "audio_filename": "signpost",
+  "top": "50%",
+  "left": "69%",
+  "cardTop": "45%",
+  "cardLeft": "62%",
+  "color": "#DEB887"
+  },
+  {
+  "chinese_word": "入口",
+  "english_word": "Entrance",
+  "pinyin": "rù kǒu",
+  "audio_filename": "entrance",
+  "top": "38%",
+  "left": "22%",
+  "cardTop": "28%",
+  "cardLeft": "22%",
+  "color": "#F5F5DC"
+  }
   ],
   "generateAudio": true
 }
