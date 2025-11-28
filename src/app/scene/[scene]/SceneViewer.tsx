@@ -3,12 +3,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useRef, useState, useEffect } from "react";
-import {
-  TransformWrapper,
-  TransformComponent,
-  useControls,
-  ReactZoomPanPinchRef,
-} from "react-zoom-pan-pinch";
 
 export type VocabularyItem = {
   chinese_word: string;
@@ -37,8 +31,8 @@ const buildAudioSrc = (slug: string, fileName: string) =>
 // 解析百分比字符串为数字
 const parsePercent = (val: string) => parseFloat(val.replace("%", "")) / 100;
 
-// 计算两点之间的连接线参数
-const calculateLine = (
+// 计算贝塞尔曲线路径
+const calculateBezierPath = (
   x1Percent: string,
   y1Percent: string,
   x2Percent: string,
@@ -51,58 +45,47 @@ const calculateLine = (
   const x2 = parsePercent(x2Percent) * containerWidth;
   const y2 = parsePercent(y2Percent) * containerHeight;
 
-  const length = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
-  const angle = Math.atan2(y2 - y1, x2 - x1) * (180 / Math.PI);
+  // 计算中点
+  const midX = (x1 + x2) / 2;
+  const midY = (y1 + y2) / 2;
+  
+  // 计算垂直于连线的偏移量，用于控制曲线弯曲程度
+  const dx = x2 - x1;
+  const dy = y2 - y1;
+  const length = Math.sqrt(dx * dx + dy * dy);
+  
+  // 曲线弯曲程度（正值向一侧弯曲，可以根据位置关系调整）
+  // 弯曲量与距离成正比，但有上限
+  const curvature = Math.min(length * 0.15, 40);
+  
+  // 计算垂直方向的单位向量（顺时针旋转90度）
+  const perpX = dy / length;
+  const perpY = -dx / length;
+  
+  // 根据起点和终点的相对位置决定弯曲方向
+  // 如果卡片在物体右边，向上弯曲；在左边，向下弯曲
+  const bendDirection = x2 > x1 ? -1 : 1;
+  
+  // 控制点
+  const ctrlX = midX + perpX * curvature * bendDirection;
+  const ctrlY = midY + perpY * curvature * bendDirection;
 
-  return { length, angle };
+  return {
+    x1, y1, x2, y2,
+    ctrlX, ctrlY,
+    // SVG 二次贝塞尔曲线路径
+    path: `M ${x1} ${y1} Q ${ctrlX} ${ctrlY} ${x2} ${y2}`,
+  };
 };
 
-// 缩放范围
-const MIN_SCALE = 0.5;
-const MAX_SCALE = 3;
+// 图片原始设计尺寸（标注是在这个尺寸下制作的，1120px时比例为1）
+const DESIGN_WIDTH = 1120;
 
-// 卡片缩放基准宽度（宽度为900px时，卡片缩放比例为1）
-const CARD_BASE_WIDTH = 900;
-const CARD_MIN_SCALE = 0.5;  // 卡片最小缩放比例
-const CARD_MAX_SCALE = 1.2;  // 卡片最大缩放比例
+// 卡片在设计稿下的基础尺寸系数（可调整卡片整体大小）
+const CARD_BASE_SCALE = 1.0;
 
-// 缩放控制按钮组件
-function ZoomControls({ scale }: { scale: number }) {
-  const { zoomIn, zoomOut, resetTransform } = useControls();
-  
-  return (
-    <div className="flex items-center gap-1 rounded-full bg-white/90 p-1 shadow-md">
-      <button
-        onClick={() => zoomOut()}
-        className="flex h-8 w-8 items-center justify-center rounded-full text-gray-600 transition hover:bg-pink-100 active:scale-95"
-        title="缩小"
-      >
-        <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 12H4" />
-        </svg>
-      </button>
-      <button
-        onClick={() => resetTransform()}
-        className="flex h-8 min-w-[3rem] items-center justify-center rounded-full px-2 text-sm font-medium text-gray-700 transition hover:bg-pink-100 active:scale-95"
-        title="重置缩放"
-      >
-        {Math.round(scale * 100)}%
-      </button>
-      <button
-        onClick={() => zoomIn()}
-        className="flex h-8 w-8 items-center justify-center rounded-full text-gray-600 transition hover:bg-pink-100 active:scale-95"
-        title="放大"
-      >
-        <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-        </svg>
-      </button>
-    </div>
-  );
-}
-
-// 移动端判断阈值（小于此宽度视为手机）
-const MOBILE_BREAKPOINT = 768;
+// PC 判断阈值（大于此值视为 PC）
+const PC_BREAKPOINT = 1024;
 
 export default function SceneViewer({
   sceneName,
@@ -114,20 +97,33 @@ export default function SceneViewer({
 }: SceneViewerProps) {
   const audioCache = useRef<Record<string, HTMLAudioElement>>({});
   const containerRef = useRef<HTMLDivElement>(null);
-  const transformRef = useRef<ReactZoomPanPinchRef>(null);
   const [containerSize, setContainerSize] = useState({ width: 0, height: 0 });
-  const [scale, setScale] = useState(1);
-  const [isMobile, setIsMobile] = useState(false);
+  const [shouldRotate, setShouldRotate] = useState(false);
+  const [viewportSize, setViewportSize] = useState({ width: 0, height: 0 });
 
-  // 检测是否为移动端
+  // 检测设备类型和是否需要旋转
+  // 逻辑：非 PC + 横屏（宽 > 高）时旋转页面，让 A4 纵向图片更好展示
   useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < MOBILE_BREAKPOINT);
+    const checkDevice = () => {
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+      const isPC = Math.max(width, height) >= PC_BREAKPOINT && !('ontouchstart' in window);
+      const isLandscape = width > height;
+      
+      setViewportSize({ width, height });
+      
+      // 非 PC + 横屏时需要旋转（如 iPad 横握）
+      // 手机竖屏（高 > 宽）保持原样
+      setShouldRotate(!isPC && isLandscape);
     };
     
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+    checkDevice();
+    window.addEventListener('resize', checkDevice);
+    window.addEventListener('orientationchange', checkDevice);
+    return () => {
+      window.removeEventListener('resize', checkDevice);
+      window.removeEventListener('orientationchange', checkDevice);
+    };
   }, []);
 
   // 监听容器尺寸变化
@@ -143,16 +139,36 @@ export default function SceneViewer({
     return () => observer.disconnect();
   }, []);
 
-  // 计算卡片缩放比例（基于容器宽度）
-  const cardScale = Math.min(
-    CARD_MAX_SCALE,
-    Math.max(CARD_MIN_SCALE, containerSize.width / CARD_BASE_WIDTH)
-  );
+  // 预加载所有音频文件
+  useEffect(() => {
+    const cache = audioCache.current;
+    
+    // 遍历所有词汇，预加载对应的音频
+    vocabulary.forEach((item) => {
+      const audioSrc = buildAudioSrc(slug, item.audio_filename);
+      
+      // 如果还没有缓存，创建 Audio 对象并预加载
+      if (!cache[audioSrc]) {
+        const audio = new Audio();
+        audio.preload = 'auto'; // 自动预加载
+        audio.src = audioSrc;
+        cache[audioSrc] = audio;
+      }
+    });
 
-  // 处理缩放变化事件
-  const handleTransformChange = useCallback((ref: ReactZoomPanPinchRef) => {
-    setScale(ref.state.scale);
-  }, []);
+    // 组件卸载时清理音频资源
+    return () => {
+      Object.values(cache).forEach((audio) => {
+        audio.pause();
+        audio.src = '';
+      });
+    };
+  }, [vocabulary, slug]);
+
+  // 计算卡片缩放比例（与图片缩放保持同步）
+  const cardScale = containerSize.width > 0 
+    ? (containerSize.width / DESIGN_WIDTH) * CARD_BASE_SCALE
+    : CARD_BASE_SCALE;
 
   const handlePlay = useCallback((audioSrc: string) => {
     const cache = audioCache.current;
@@ -175,76 +191,136 @@ export default function SceneViewer({
     });
   }, []);
 
-  return (
-    <TransformWrapper
-      ref={transformRef}
-      initialScale={1}
-      minScale={MIN_SCALE}
-      maxScale={MAX_SCALE}
-      centerOnInit={false}
-      onTransformed={handleTransformChange}
-      disabled={!isMobile}
-      panning={{ disabled: !isMobile, velocityDisabled: true }}
-      doubleClick={{ disabled: !isMobile, mode: "reset" }}
-      wheel={{ disabled: !isMobile, step: 0.1 }}
-      pinch={{ disabled: !isMobile, step: 5 }}
-    >
-      <div className="min-h-screen w-full bg-gradient-to-b from-amber-100 via-pink-50 to-sky-100">
-        {/* 装饰性背景元素 */}
-        <div className="pointer-events-none fixed inset-0 overflow-hidden">
-          <div className="absolute -left-20 top-20 h-64 w-64 rounded-full bg-yellow-200/30 blur-3xl" />
-          <div className="absolute -right-20 top-1/3 h-72 w-72 rounded-full bg-pink-200/30 blur-3xl" />
-          <div className="absolute bottom-40 left-1/4 h-56 w-56 rounded-full bg-green-200/30 blur-3xl" />
-          <div className="absolute -bottom-10 right-1/4 h-48 w-48 rounded-full bg-blue-200/30 blur-3xl" />
+  // 旋转容器样式：将横屏旋转为竖屏显示
+  const rotatedContainerStyle = shouldRotate ? {
+    transform: 'rotate(-90deg)',
+    transformOrigin: 'center center',
+    width: viewportSize.height,
+    height: viewportSize.width,
+    position: 'fixed' as const,
+    top: '50%',
+    left: '50%',
+    marginTop: -(viewportSize.width / 2),
+    marginLeft: -(viewportSize.height / 2),
+  } : {};
+
+  // PC 下使用正常布局，可滚动；旋转模式下使用 fixed 布局
+  if (shouldRotate) {
+    return (
+      <div className="fixed inset-0 overflow-hidden bg-gradient-to-b from-amber-100 via-pink-50 to-sky-100">
+        <div style={rotatedContainerStyle} className="overflow-auto">
+          <SceneContent
+            sceneName={sceneName}
+            sceneIcon={sceneIcon}
+            sceneDescription={sceneDescription}
+            slug={slug}
+            backgroundImage={backgroundImage}
+            vocabulary={vocabulary}
+            containerRef={containerRef}
+            containerSize={containerSize}
+            cardScale={cardScale}
+            handlePlay={handlePlay}
+            minHeight={viewportSize.width}
+          />
         </div>
+      </div>
+    );
+  }
 
-        {/* 顶部导航栏 */}
-        <header className="sticky top-0 z-50 border-b border-white/50 bg-white/80 backdrop-blur-md">
-          <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
-            <Link
-              href="/"
-              className="flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-pink-400 to-orange-400 p-2 text-sm font-medium text-white shadow-md transition hover:shadow-lg active:scale-95 sm:px-4 sm:py-2"
-            >
-              <svg className="h-5 w-5 sm:h-4 sm:w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-              </svg>
-              <span className="hidden sm:inline">返回首页</span>
-            </Link>
-            
-            <div className="flex items-center gap-2 text-center">
-              <span className="text-2xl">{sceneIcon}</span>
-              <h1 className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-xl font-bold text-transparent">
-                {sceneName}
-              </h1>
-            </div>
+  return (
+    <SceneContent
+      sceneName={sceneName}
+      sceneIcon={sceneIcon}
+      sceneDescription={sceneDescription}
+      slug={slug}
+      backgroundImage={backgroundImage}
+      vocabulary={vocabulary}
+      containerRef={containerRef}
+      containerSize={containerSize}
+      cardScale={cardScale}
+      handlePlay={handlePlay}
+    />
+  );
+}
 
-            {/* 缩放控制按钮 - 仅移动端显示 */}
-            {isMobile && <ZoomControls scale={scale} />}
+// 提取场景内容为独立组件，避免代码重复
+type SceneContentProps = {
+  sceneName: string;
+  sceneIcon: string;
+  sceneDescription: string;
+  slug: string;
+  backgroundImage: string | null;
+  vocabulary: VocabularyItem[];
+  containerRef: React.RefObject<HTMLDivElement | null>;
+  containerSize: { width: number; height: number };
+  cardScale: number;
+  handlePlay: (audioSrc: string) => void;
+  minHeight?: number;
+};
+
+function SceneContent({
+  sceneName,
+  sceneIcon,
+  sceneDescription,
+  slug,
+  backgroundImage,
+  vocabulary,
+  containerRef,
+  containerSize,
+  cardScale,
+  handlePlay,
+  minHeight,
+}: SceneContentProps) {
+  return (
+    <div 
+      className="w-full min-h-screen bg-gradient-to-b from-amber-100 via-pink-50 to-sky-100"
+      style={minHeight ? { minHeight } : {}}
+    >
+          {/* 装饰性背景元素 */}
+          <div className="pointer-events-none fixed inset-0 overflow-hidden">
+            <div className="absolute -left-20 top-20 h-64 w-64 rounded-full bg-yellow-200/30 blur-3xl" />
+            <div className="absolute -right-20 top-1/3 h-72 w-72 rounded-full bg-pink-200/30 blur-3xl" />
+            <div className="absolute bottom-40 left-1/4 h-56 w-56 rounded-full bg-green-200/30 blur-3xl" />
+            <div className="absolute -bottom-10 right-1/4 h-48 w-48 rounded-full bg-blue-200/30 blur-3xl" />
           </div>
-        </header>
 
-        {/* 场景描述 */}
-        {sceneDescription && (
-          <div className="relative z-10 mx-auto max-w-4xl px-4 py-4">
-            <div className="rounded-2xl bg-white/70 px-4 py-3 text-center text-gray-600 shadow-sm backdrop-blur-sm">
-              {sceneDescription}
+          {/* 顶部导航栏 */}
+          <header className="sticky top-0 z-50 border-b border-white/50 bg-white/80 backdrop-blur-md">
+            <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
+              <Link
+                href="/"
+                className="flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-pink-400 to-orange-400 p-2 text-sm font-medium text-white shadow-md transition hover:shadow-lg active:scale-95 sm:px-4 sm:py-2"
+              >
+                <svg className="h-5 w-5 sm:h-4 sm:w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                <span className="hidden sm:inline">返回首页</span>
+              </Link>
+              
+              <div className="flex items-center gap-2 text-center">
+                <span className="text-2xl">{sceneIcon}</span>
+                <h1 className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-xl font-bold text-transparent">
+                  {sceneName}
+                </h1>
+              </div>
+
+              {/* 占位，保持布局平衡 */}
+              <div className="w-10 sm:w-24" />
             </div>
-          </div>
-        )}
+          </header>
 
-        {/* 主要内容区域 */}
-        <div className="relative z-10 mx-auto max-w-6xl px-4 pb-8">
-          <div className="rounded-3xl bg-white/50 p-2 shadow-xl backdrop-blur-sm sm:p-4" style={{ overflow: isMobile ? 'hidden' : 'visible' }}>
-            <TransformComponent
-              wrapperStyle={{
-                width: "100%",
-                ...(isMobile ? { maxHeight: "calc(100vh - 200px)", overflow: "hidden" } : {}),
-                borderRadius: "1rem",
-              }}
-              contentStyle={{
-                width: "100%",
-              }}
-            >
+          {/* 场景描述 */}
+          {sceneDescription && (
+            <div className="relative z-10 mx-auto max-w-4xl px-4 py-4">
+              <div className="rounded-2xl bg-white/70 px-4 py-3 text-center text-gray-600 shadow-sm backdrop-blur-sm">
+                {sceneDescription}
+              </div>
+            </div>
+          )}
+
+          {/* 主要内容区域 */}
+          <div className="relative z-10 mx-auto max-w-6xl px-4 pb-8">
+            <div className="rounded-3xl bg-white/50 p-2 shadow-xl backdrop-blur-sm sm:p-4">
               <div
                 ref={containerRef}
                 className="relative w-full"
@@ -269,51 +345,61 @@ export default function SceneViewer({
 
                 {/* 标注层 - 包含连接线、标记点、卡片 */}
                 <div className="pointer-events-none absolute inset-0 z-10">
+                  {/* SVG 层用于绘制所有贝塞尔曲线连接线 */}
+                  {containerSize.width > 0 && (
+                    <svg 
+                      className="absolute inset-0 w-full h-full" 
+                      style={{ overflow: 'visible' }}
+                    >
+                      <defs>
+                        {/* 为每个连接线定义阴影滤镜 */}
+                        <filter id="line-shadow" x="-20%" y="-20%" width="140%" height="140%">
+                          <feDropShadow dx="0" dy="1" stdDeviation="1.5" floodOpacity="0.2" />
+                        </filter>
+                      </defs>
+                      {vocabulary.map((item) => {
+                        const color = item.color || "#FF6B6B";
+                        const bezier = calculateBezierPath(
+                          item.left,
+                          item.top,
+                          item.cardLeft,
+                          item.cardTop,
+                          containerSize.width,
+                          containerSize.height
+                        );
+                        
+                        return (
+                          <g key={`line-${item.chinese_word}-${item.audio_filename}`}>
+                            {/* 白色描边背景 */}
+                            <path
+                              d={bezier.path}
+                              fill="none"
+                              stroke="white"
+                              strokeWidth={4 * cardScale}
+                              strokeLinecap="round"
+                              filter="url(#line-shadow)"
+                            />
+                            {/* 彩色主线 */}
+                            <path
+                              d={bezier.path}
+                              fill="none"
+                              stroke={color}
+                              strokeWidth={2 * cardScale}
+                              strokeLinecap="round"
+                              opacity={0.7}
+                            />
+                          </g>
+                        );
+                      })}
+                    </svg>
+                  )}
+                  
                   {vocabulary.map((item) => {
                     const audioSrc = buildAudioSrc(slug, item.audio_filename);
                     const color = item.color || "#FF6B6B";
 
-                    // 计算连接线参数
-                    const lineParams =
-                      containerSize.width > 0
-                        ? calculateLine(
-                            item.left,
-                            item.top,
-                            item.cardLeft,
-                            item.cardTop,
-                            containerSize.width,
-                            containerSize.height
-                          )
-                        : null;
-
                     return (
                       <div key={`${item.chinese_word}-${item.audio_filename}`}>
-                        {/* 连接线 */}
-                        {lineParams && (
-                          <div
-                            className="absolute origin-left"
-                            style={{
-                              left: item.left,
-                              top: item.top,
-                              width: lineParams.length,
-                              height: 4 * cardScale,
-                              transform: `translateY(-50%) rotate(${lineParams.angle}deg)`,
-                              backgroundColor: "white",
-                              borderRadius: 2 * cardScale,
-                              boxShadow: '0 1px 3px rgba(0,0,0,0.2)',
-                            }}
-                          >
-                            <div
-                              className="absolute left-0 top-1/2 -translate-y-1/2 rounded-full"
-                              style={{
-                                width: "100%",
-                                height: 2 * cardScale,
-                                backgroundColor: color,
-                                opacity: 0.7,
-                              }}
-                            />
-                          </div>
-                        )}
                         {/* 物体位置标记点 */}
                         <div
                           className="absolute z-20 -translate-x-1/2 -translate-y-1/2"
@@ -354,7 +440,7 @@ export default function SceneViewer({
                               </svg>
                             </button>
                             <div className="flex flex-col items-center text-center">
-                              <p className="text-[10px] uppercase tracking-[0.15em] text-gray-500 whitespace-nowrap">
+                              <p className="text-[10px] tracking-[0.1em] text-gray-500 whitespace-nowrap">
                                 {item.pinyin}
                               </p>
                               <p className="text-[14px] font-bold text-gray-800">
@@ -371,35 +457,23 @@ export default function SceneViewer({
                   })}
                 </div>
               </div>
-            </TransformComponent>
-          </div>
+            </div>
 
-          {/* 底部操作提示 */}
-          <div className="mt-4 flex flex-wrap items-center justify-center gap-4 text-sm text-gray-500">
-            <span className="flex items-center gap-1">
-              <span className="text-lg">👆</span> 点击播放按钮听发音
-            </span>
-            {isMobile && (
-              <>
-                <span className="flex items-center gap-1">
-                  <span className="text-lg">🔍</span> 双指缩放，双击重置
-                </span>
-                <span className="flex items-center gap-1">
-                  <span className="text-lg">✋</span> 拖动平移查看
-                </span>
-              </>
-            )}
-          </div>
+            {/* 底部操作提示 */}
+            <div className="mt-4 flex flex-wrap items-center justify-center gap-4 text-sm text-gray-500">
+              <span className="flex items-center gap-1">
+                <span className="text-lg">👆</span> 点击播放按钮听发音
+              </span>
+            </div>
 
-          {/* 词汇统计 */}
-          <div className="mt-4 text-center">
-            <span className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-purple-100 to-pink-100 px-4 py-2 text-sm font-medium text-purple-700">
-              <span className="text-lg">📚</span>
-              本场景共有 <strong>{vocabulary.length}</strong> 个词汇等你来学习！
-            </span>
+            {/* 词汇统计 */}
+            <div className="mt-4 text-center">
+              <span className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-purple-100 to-pink-100 px-4 py-2 text-sm font-medium text-purple-700">
+                <span className="text-lg">📚</span>
+                本场景共有 <strong>{vocabulary.length}</strong> 个词汇等你来学习！
+              </span>
+            </div>
           </div>
-        </div>
-      </div>
-    </TransformWrapper>
+    </div>
   );
 }
