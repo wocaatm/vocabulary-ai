@@ -87,6 +87,81 @@ const CARD_BASE_SCALE = 1.0;
 // PC 判断阈值（大于此值视为 PC）
 const PC_BREAKPOINT = 1024;
 
+// 可爱的 Loading 组件
+function CuteLoading({ sceneName, sceneIcon }: { sceneName: string; sceneIcon: string }) {
+  const animals = ['🐼', '🦁', '🐘', '🦒', '🐵', '🦋', '🐠', '🐢'];
+  
+  return (
+    <div className="fixed inset-0 z-[200] flex flex-col items-center justify-center bg-gradient-to-b from-amber-100 via-pink-50 to-sky-100">
+      {/* 背景装饰 */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div className="absolute -left-20 top-20 h-64 w-64 rounded-full bg-yellow-200/40 blur-3xl animate-pulse" />
+        <div className="absolute -right-20 top-1/3 h-72 w-72 rounded-full bg-pink-200/40 blur-3xl animate-pulse" style={{ animationDelay: '0.5s' }} />
+        <div className="absolute bottom-40 left-1/4 h-56 w-56 rounded-full bg-green-200/40 blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
+      </div>
+      
+      {/* 主要内容 */}
+      <div className="relative z-10 flex flex-col items-center">
+        {/* 跳动的动物表情 */}
+        <div className="mb-8 flex gap-2">
+          {animals.map((animal, index) => (
+            <span
+              key={index}
+              className="text-3xl sm:text-4xl animate-bounce"
+              style={{ 
+                animationDelay: `${index * 0.1}s`,
+                animationDuration: '0.8s',
+              }}
+            >
+              {animal}
+            </span>
+          ))}
+        </div>
+        
+        {/* 场景图标和名称 */}
+        <div className="mb-6 flex items-center gap-3">
+          <span className="text-5xl animate-pulse">{sceneIcon}</span>
+        </div>
+        
+        {/* 加载文字 */}
+        <div className="mb-4 text-center">
+          <h2 className="mb-2 bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-2xl font-bold text-transparent">
+            {sceneName}
+          </h2>
+          <p className="text-gray-600">正在准备精彩内容...</p>
+        </div>
+        
+        {/* 可爱的进度条 */}
+        <div className="relative h-3 w-48 overflow-hidden rounded-full bg-white/50 shadow-inner">
+          <div 
+            className="absolute h-full rounded-full bg-gradient-to-r from-pink-400 via-purple-400 to-blue-400"
+            style={{
+              animation: 'loading-progress 1.5s ease-in-out infinite',
+              width: '40%',
+            }}
+          />
+        </div>
+        
+        {/* 提示文字 */}
+        <p className="mt-6 text-sm text-gray-500">
+          <span className="inline-block animate-bounce" style={{ animationDelay: '0s' }}>🎨</span>
+          {' '}小朋友稍等一下哦{' '}
+          <span className="inline-block animate-bounce" style={{ animationDelay: '0.2s' }}>✨</span>
+        </p>
+      </div>
+      
+      {/* CSS 动画 */}
+      <style jsx>{`
+        @keyframes loading-progress {
+          0% { transform: translateX(-100%); }
+          50% { transform: translateX(150%); }
+          100% { transform: translateX(-100%); }
+        }
+      `}</style>
+    </div>
+  );
+}
+
 export default function SceneViewer({
   sceneName,
   sceneIcon,
@@ -100,6 +175,15 @@ export default function SceneViewer({
   const [containerSize, setContainerSize] = useState({ width: 0, height: 0 });
   const [shouldRotate, setShouldRotate] = useState(false);
   const [viewportSize, setViewportSize] = useState({ width: 0, height: 0 });
+  const [isLoading, setIsLoading] = useState(true);
+
+  // 处理图片加载完成
+  const handleImageLoad = useCallback(() => {
+    // 添加小延迟让动画更流畅
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 500);
+  }, []);
 
   // 检测设备类型和是否需要旋转
   // 逻辑：非 PC + 横屏（宽 > 高）时旋转页面，让 A4 纵向图片更好展示
@@ -207,39 +291,47 @@ export default function SceneViewer({
   // PC 下使用正常布局，可滚动；旋转模式下使用 fixed 布局
   if (shouldRotate) {
     return (
-      <div className="fixed inset-0 overflow-hidden bg-gradient-to-b from-amber-100 via-pink-50 to-sky-100">
-        <div style={rotatedContainerStyle} className="overflow-auto">
-          <SceneContent
-            sceneName={sceneName}
-            sceneIcon={sceneIcon}
-            sceneDescription={sceneDescription}
-            slug={slug}
-            backgroundImage={backgroundImage}
-            vocabulary={vocabulary}
-            containerRef={containerRef}
-            containerSize={containerSize}
-            cardScale={cardScale}
-            handlePlay={handlePlay}
-            minHeight={viewportSize.width}
-          />
+      <>
+        {isLoading && <CuteLoading sceneName={sceneName} sceneIcon={sceneIcon} />}
+        <div className="fixed inset-0 overflow-hidden bg-gradient-to-b from-amber-100 via-pink-50 to-sky-100">
+          <div style={rotatedContainerStyle} className="overflow-auto">
+            <SceneContent
+              sceneName={sceneName}
+              sceneIcon={sceneIcon}
+              sceneDescription={sceneDescription}
+              slug={slug}
+              backgroundImage={backgroundImage}
+              vocabulary={vocabulary}
+              containerRef={containerRef}
+              containerSize={containerSize}
+              cardScale={cardScale}
+              handlePlay={handlePlay}
+              onImageLoad={handleImageLoad}
+              minHeight={viewportSize.width}
+            />
+          </div>
         </div>
-      </div>
+      </>
     );
   }
 
   return (
-    <SceneContent
-      sceneName={sceneName}
-      sceneIcon={sceneIcon}
-      sceneDescription={sceneDescription}
-      slug={slug}
-      backgroundImage={backgroundImage}
-      vocabulary={vocabulary}
-      containerRef={containerRef}
-      containerSize={containerSize}
-      cardScale={cardScale}
-      handlePlay={handlePlay}
-    />
+    <>
+      {isLoading && <CuteLoading sceneName={sceneName} sceneIcon={sceneIcon} />}
+      <SceneContent
+        sceneName={sceneName}
+        sceneIcon={sceneIcon}
+        sceneDescription={sceneDescription}
+        slug={slug}
+        backgroundImage={backgroundImage}
+        vocabulary={vocabulary}
+        containerRef={containerRef}
+        containerSize={containerSize}
+        cardScale={cardScale}
+        handlePlay={handlePlay}
+        onImageLoad={handleImageLoad}
+      />
+    </>
   );
 }
 
@@ -255,6 +347,7 @@ type SceneContentProps = {
   containerSize: { width: number; height: number };
   cardScale: number;
   handlePlay: (audioSrc: string) => void;
+  onImageLoad: () => void;
   minHeight?: number;
 };
 
@@ -269,8 +362,16 @@ function SceneContent({
   containerSize,
   cardScale,
   handlePlay,
+  onImageLoad,
   minHeight,
 }: SceneContentProps) {
+  // 如果没有背景图片，直接触发加载完成
+  useEffect(() => {
+    if (!backgroundImage) {
+      onImageLoad();
+    }
+  }, [backgroundImage, onImageLoad]);
+
   return (
     <div 
       className="w-full min-h-screen bg-gradient-to-b from-amber-100 via-pink-50 to-sky-100"
@@ -335,6 +436,7 @@ function SceneContent({
                     style={{ maxWidth: '100%' }}
                     priority
                     draggable={false}
+                    onLoad={onImageLoad}
                   />
                 ) : (
                   <div className="flex aspect-video items-center justify-center rounded-2xl bg-gradient-to-br from-pink-200 to-purple-200 text-gray-500">
