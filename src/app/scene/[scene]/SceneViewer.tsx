@@ -203,12 +203,12 @@ export default function SceneViewer({
           <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
             <Link
               href="/"
-              className="flex items-center gap-2 rounded-full bg-gradient-to-r from-pink-400 to-orange-400 px-4 py-2 text-sm font-medium text-white shadow-md transition hover:shadow-lg active:scale-95"
+              className="flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-pink-400 to-orange-400 p-2 text-sm font-medium text-white shadow-md transition hover:shadow-lg active:scale-95 sm:px-4 sm:py-2"
             >
-              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg className="h-5 w-5 sm:h-4 sm:w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
               </svg>
-              返回首页
+              <span className="hidden sm:inline">返回首页</span>
             </Link>
             
             <div className="flex items-center gap-2 text-center">
