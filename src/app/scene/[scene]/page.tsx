@@ -9,6 +9,8 @@ import SceneViewer, {
 
 type SceneConfig = {
   scene_name?: string;
+  scene_icon?: string;
+  scene_description?: string;
   display_name?: string;
   title?: string;
   vocabulary_list?: VocabularyItem[];
@@ -58,6 +60,8 @@ const loadSceneConfig = (slug?: string) => {
         data.display_name ||
         data.title ||
         formatSceneTitle(normalizedSlug),
+      sceneIcon: data.scene_icon || "🎪",
+      sceneDescription: data.scene_description || "",
       backgroundImage: fs.existsSync(backgroundPath)
         ? `/scene/${normalizedSlug}/bg.jpeg`
         : null,
@@ -121,6 +125,8 @@ export default async function ScenePage({ params }: ScenePageProps) {
   return (
     <SceneViewer
       sceneName={sceneData.sceneName}
+      sceneIcon={sceneData.sceneIcon}
+      sceneDescription={sceneData.sceneDescription}
       slug={sceneData.slug}
       backgroundImage={sceneData.backgroundImage}
       vocabulary={sceneData.vocabulary}
