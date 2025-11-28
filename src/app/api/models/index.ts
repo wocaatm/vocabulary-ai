@@ -2,7 +2,12 @@ import { GoogleGenAI, Type, Modality } from "@google/genai";
 import { GeminiPlanResponse } from "./types";
 
 const getAIClient = () => {
-  return new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || 'AIzaSyD3QWkHuv4d8THwVoFbI75VuCDRjBgzywg' });
+  console.log('process.env.GEMINI_API_KEY', process.env.NEXT_PUBLIC_GEMINI_API_KEY);
+  if (!process.env.NEXT_PUBLIC_GEMINI_API_KEY) {
+    throw new Error("NEXT_PUBLIC_GEMINI_API_KEY is not set");
+  }
+  
+  return new GoogleGenAI({ apiKey: process.env.NEXT_PUBLIC_GEMINI_API_KEY });
 };
 
 export const generatePlan = async (scene: string): Promise<GeminiPlanResponse> => {
