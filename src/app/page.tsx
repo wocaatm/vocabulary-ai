@@ -3,6 +3,7 @@ import path from "path";
 
 import Image from "next/image";
 import Link from "next/link";
+import Logo from "./component/Logo";
 
 type SceneCard = {
   slug: string;
@@ -90,10 +91,8 @@ export default function Home() {
 
       <div className="relative mx-auto flex w-full max-w-5xl flex-col gap-8">
         <header className="space-y-4 text-center">
-          <div className="flex items-center justify-center gap-2">
-            <span className="text-4xl animate-bounce">🌈</span>
-            <span className="text-3xl animate-bounce" style={{ animationDelay: "0.1s" }}>⭐</span>
-            <span className="text-4xl animate-bounce" style={{ animationDelay: "0.2s" }}>🎨</span>
+          <div className="flex items-center justify-center">
+            <Logo size={140} className="drop-shadow-lg animate-float" />
           </div>
           <h1 className="bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 bg-clip-text text-5xl font-bold tracking-tight text-transparent drop-shadow-sm">
             快乐识字乐园
@@ -125,8 +124,7 @@ export default function Home() {
                   {/* 装饰角标 */}
                   <div className={`absolute -right-8 -top-8 h-16 w-16 rotate-45 bg-gradient-to-br ${colorScheme.bg} opacity-60`} />
                   
-                  <div className="relative mb-4 h-48 overflow-hidden rounded-2xl">
-                    <div className={`absolute inset-0 bg-gradient-to-br ${colorScheme.bg} opacity-20`} />
+                  <div className={`relative mb-4 h-48 overflow-hidden rounded-2xl bg-gradient-to-br ${colorScheme.bg}`}>
                     {scene.imagePath ? (
                       <Image
                         src={scene.imagePath}
@@ -135,6 +133,8 @@ export default function Home() {
                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 30vw"
                         className="object-cover transition duration-500 group-hover:scale-110"
                         priority={index < 3}
+                        loading={index < 6 ? "eager" : "lazy"}
+                        placeholder="empty"
                       />
                     ) : (
                       <div className={`flex h-full items-center justify-center bg-gradient-to-br ${colorScheme.bg} text-white`}>

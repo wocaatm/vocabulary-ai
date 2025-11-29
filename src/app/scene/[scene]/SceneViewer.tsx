@@ -447,7 +447,7 @@ function SceneContent({
             <div className="rounded-3xl bg-white/50 p-2 shadow-xl backdrop-blur-sm sm:p-4">
               <div
                 ref={containerRef}
-                className="relative w-full"
+                className="relative w-full overflow-hidden rounded-2xl bg-gradient-to-br from-amber-100 via-pink-100 to-purple-100"
               >
                 {backgroundImage ? (
                   <Image
@@ -458,6 +458,7 @@ function SceneContent({
                     className="h-auto w-full rounded-2xl"
                     style={{ maxWidth: '100%' }}
                     priority
+                    loading="eager"
                     draggable={false}
                     onLoad={onImageLoad}
                   />

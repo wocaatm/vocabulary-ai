@@ -40,3 +40,17 @@ body {
 .play-button {
   animation: play-button-scale 2s ease-in-out infinite;
 }
+
+/* Logo 浮动动画 */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
