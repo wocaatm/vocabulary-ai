@@ -82,14 +82,18 @@ const calculateBezierPath = (
 const DESIGN_WIDTH = 1120;
 
 // 卡片在设计稿下的基础尺寸系数（可调整卡片整体大小）
-const CARD_BASE_SCALE = 1.0;
+// PC端初始状态下字体需要更大，设为1.3使文字更清晰易读
+const CARD_BASE_SCALE = 1.2;
 
 // 可爱的 Loading 组件
 function CuteLoading({ sceneName, sceneIcon }: { sceneName: string; sceneIcon: string }) {
   const animals = ['🐼', '🦁', '🐘', '🦒', '🐵', '🦋', '🐠', '🐢'];
   
   return (
-    <div className="fixed inset-0 z-[200] flex flex-col items-center justify-center bg-gradient-to-b from-amber-100 via-pink-50 to-sky-100">
+    <div 
+      className="fixed inset-0 z-[200] flex flex-col items-center justify-center bg-gradient-to-b from-amber-100 via-pink-50 to-sky-100"
+      style={{ backgroundColor: '#fdf4e8' }} // 后备纯色背景，防止iPad等设备渐变不生效时透明
+    >
       {/* 背景装饰 */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <div className="absolute -left-20 top-20 h-64 w-64 rounded-full bg-yellow-200/40 blur-3xl animate-pulse" />
@@ -218,8 +222,10 @@ export default function SceneViewer({
       // 如果还没有缓存，创建 Audio 对象并预加载
       if (!cache[audioSrc]) {
         const audio = new Audio();
-        audio.preload = 'auto'; // 自动预加载
+        audio.preload = 'auto';
         audio.src = audioSrc;
+        // 尝试触发加载（某些浏览器需要）
+        audio.load();
         cache[audioSrc] = audio;
       }
     });
@@ -228,7 +234,6 @@ export default function SceneViewer({
     return () => {
       Object.values(cache).forEach((audio) => {
         audio.pause();
-        audio.src = '';
       });
     };
   }, [vocabulary, slug]);
@@ -236,6 +241,7 @@ export default function SceneViewer({
   const handlePlay = useCallback((audioSrc: string) => {
     const cache = audioCache.current;
 
+    // 停止其他正在播放的音频
     Object.entries(cache).forEach(([key, audio]) => {
       if (key !== audioSrc && !audio.paused) {
         audio.pause();
@@ -243,15 +249,43 @@ export default function SceneViewer({
       }
     });
 
-    if (!cache[audioSrc]) {
-      cache[audioSrc] = new Audio(audioSrc);
-    } else {
-      cache[audioSrc].currentTime = 0;
+    // 获取或创建音频对象
+    let audio = cache[audioSrc];
+    
+    // 如果缓存中没有，或者音频源无效，重新创建
+    if (!audio || !audio.src) {
+      audio = new Audio(audioSrc);
+      audio.load();
+      cache[audioSrc] = audio;
     }
 
-    cache[audioSrc].play().catch((error) => {
-      console.error("音频播放失败", error);
-    });
+    // 检查音频是否已经可以播放
+    const tryPlay = () => {
+      audio.currentTime = 0;
+      audio.play().catch((error) => {
+        console.error("音频播放失败", error);
+      });
+    };
+
+    // 如果音频已加载完成，直接播放；否则等待加载
+    if (audio.readyState >= 2) { // HAVE_CURRENT_DATA 或更高
+      tryPlay();
+    } else {
+      // 等待音频可以播放
+      const onCanPlay = () => {
+        tryPlay();
+        audio.removeEventListener('canplay', onCanPlay);
+        audio.removeEventListener('error', onError);
+      };
+      const onError = () => {
+        console.error("音频加载失败:", audioSrc);
+        audio.removeEventListener('canplay', onCanPlay);
+        audio.removeEventListener('error', onError);
+      };
+      audio.addEventListener('canplay', onCanPlay);
+      audio.addEventListener('error', onError);
+      audio.load(); // 确保开始加载
+    }
   }, []);
 
   // 旋转容器样式：将横屏旋转为竖屏显示
@@ -516,20 +550,22 @@ function SceneContent({
                           }}
                         >
                           <div
-                            className="relative rounded-xl border-2 bg-white/95 px-3 py-2 text-[12px] leading-tight shadow-lg backdrop-blur-sm transition-transform hover:scale-105"
+                            className="relative cursor-pointer rounded-xl border-2 bg-white/95 px-3 py-2 text-[12px] leading-tight shadow-lg backdrop-blur-sm transition-transform hover:scale-105 active:scale-100"
                             style={{ borderColor: color }}
+                            onClick={() => handlePlay(audioSrc)}
+                            role="button"
+                            tabIndex={0}
+                            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') handlePlay(audioSrc); }}
                           >
-                            <button
-                              type="button"
-                              aria-label={`${item.chinese_word} 播放音频`}
-                              className="play-button absolute left-0 top-0 -translate-x-1/2 -translate-y-1/2 flex h-6 w-6 items-center justify-center rounded-full border-2 border-white text-white shadow-md transition hover:scale-125 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+                            <div
+                              aria-hidden="true"
+                              className="play-button absolute left-0 top-0 -translate-x-1/2 -translate-y-1/2 flex h-6 w-6 items-center justify-center rounded-full border-2 border-white text-white shadow-md transition hover:scale-125"
                               style={{ backgroundColor: color }}
-                              onClick={() => handlePlay(audioSrc)}
                             >
                               <svg viewBox="0 0 24 24" className="h-3 w-3 fill-current" aria-hidden>
                                 <path d="M5 4.5v15a1 1 0 0 0 1.52.85l12-7.5a1 1 0 0 0 0-1.7l-12-7.5A1 1 0 0 0 5 4.5Z" />
                               </svg>
-                            </button>
+                            </div>
                             <div className="flex flex-col items-center text-center">
                               <p className="text-[10px] tracking-[0.1em] text-gray-500 whitespace-nowrap">
                                 {item.pinyin}
