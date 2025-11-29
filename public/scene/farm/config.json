@@ -18,7 +18,7 @@
     {
     "chinese_word": "谷仓",
     "english_word": "barn",
-    "pinyin": "gǔcāng",
+    "pinyin": "gǔ cāng",
     "audio_filename": "barn",
     "top": "52%",
     "left": "70%",
@@ -29,7 +29,7 @@
     {
     "chinese_word": "农夫",
     "english_word": "farmer",
-    "pinyin": "nóngfū",
+    "pinyin": "nóng fū",
     "audio_filename": "farmer",
     "top": "76%",
     "left": "40%",
@@ -40,7 +40,7 @@
     {
     "chinese_word": "风车",
     "english_word": "windmill",
-    "pinyin": "fēngchē",
+    "pinyin": "fēng chē",
     "audio_filename": "windmill",
     "top": "46%",
     "left": "50%",
@@ -51,7 +51,7 @@
     {
     "chinese_word": "栅栏",
     "english_word": "fence",
-    "pinyin": "zhàlán",
+    "pinyin": "zhà lán",
     "audio_filename": "fence",
     "top": "61%",
     "left": "30%",
@@ -62,7 +62,7 @@
     {
     "chinese_word": "干草堆",
     "english_word": "haystack",
-    "pinyin": "gāncǎoduī",
+    "pinyin": "gān cǎo duī",
     "audio_filename": "haystack",
     "top": "60%",
     "left": "10%",
@@ -73,7 +73,7 @@
     {
     "chinese_word": "锄头",
     "english_word": "hoe",
-    "pinyin": "chútou",
+    "pinyin": "chú tou",
     "audio_filename": "hoe",
     "top": "67%",
     "left": "8%",
@@ -84,7 +84,7 @@
     {
     "chinese_word": "水桶",
     "english_word": "bucket",
-    "pinyin": "shuǐtǒng",
+    "pinyin": "shuǐ tǒng",
     "audio_filename": "bucket",
     "top": "88%",
     "left": "23%",
@@ -95,7 +95,7 @@
     {
     "chinese_word": "鸡蛋",
     "english_word": "egg",
-    "pinyin": "jīdàn",
+    "pinyin": "jī dàn",
     "audio_filename": "egg",
     "top": "92%",
     "left": "82%",
@@ -106,7 +106,7 @@
     {
     "chinese_word": "鸭子",
     "english_word": "duck",
-    "pinyin": "yāzi",
+    "pinyin": "yā zi",
     "audio_filename": "duck",
     "top": "64%",
     "left": "90%",
@@ -117,7 +117,7 @@
     {
     "chinese_word": "小猪",
     "english_word": "piglet",
-    "pinyin": "xiǎozhū",
+    "pinyin": "xiǎo zhū",
     "audio_filename": "piglet",
     "top": "72%",
     "left": "15%",
@@ -139,7 +139,7 @@
     {
     "chinese_word": "田地",
     "english_word": "field",
-    "pinyin": "tiándì",
+    "pinyin": "tián dì",
     "audio_filename": "field",
     "top": "54%",
     "left": "30%",
@@ -150,7 +150,7 @@
     {
     "chinese_word": "蔬菜",
     "english_word": "vegetables",
-    "pinyin": "shūcài",
+    "pinyin": "shū cài",
     "audio_filename": "vegetables",
     "top": "84%",
     "left": "13%",
@@ -161,7 +161,7 @@
     {
     "chinese_word": "果树",
     "english_word": "fruit tree",
-    "pinyin": "guǒshù",
+    "pinyin": "guǒ shù",
     "audio_filename": "fruit_tree",
     "top": "49%",
     "left": "10%",
@@ -172,7 +172,7 @@
     {
     "chinese_word": "池塘",
     "english_word": "pond",
-    "pinyin": "chítáng",
+    "pinyin": "chí táng",
     "audio_filename": "pond",
     "top": "66%",
     "left": "80%",
@@ -181,15 +181,15 @@
     "color": "#6EBCE3"
     },
     {
-    "chinese_word": "阳光",
-    "english_word": "sunshine",
-    "pinyin": "yángguāng",
-    "audio_filename": "sunshine",
-    "top": "40%",
-    "left": "23%",
-    "cardTop": "36%",
-    "cardLeft": "15%",
-    "color": "#FFD047"
+      "chinese_word": "太阳",
+      "english_word": "sun",
+      "pinyin": "tài yáng",
+      "audio_filename": "sun",
+      "top": "40%",
+      "left": "23%",
+      "cardTop": "36%",
+      "cardLeft": "15%",
+      "color": "#FFD047"
     }
     ],
   "generateAudio": true

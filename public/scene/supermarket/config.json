@@ -7,7 +7,7 @@
     {
     "chinese_word": "购物车",
     "english_word": "shopping cart",
-    "pinyin": "gòuwùchē",
+    "pinyin": "gòu wù chē",
     "audio_filename": "shopping_cart",
     "top": "76%",
     "left": "25%",
@@ -18,7 +18,7 @@
     {
     "chinese_word": "收银台",
     "english_word": "checkout counter",
-    "pinyin": "shōuyíntái",
+    "pinyin": "shōu yín tái",
     "audio_filename": "checkout_counter",
     "top": "75%",
     "left": "65%",
@@ -29,7 +29,7 @@
     {
     "chinese_word": "货架",
     "english_word": "shelf",
-    "pinyin": "huòjià",
+    "pinyin": "huò jià",
     "audio_filename": "shelf",
     "top": "56%",
     "left": "65%",
@@ -40,7 +40,7 @@
     {
     "chinese_word": "顾客",
     "english_word": "customer",
-    "pinyin": "gùkè",
+    "pinyin": "gù kè",
     "audio_filename": "customer",
     "top": "66%",
     "left": "46%",
@@ -51,7 +51,7 @@
     {
     "chinese_word": "店员",
     "english_word": "clerk",
-    "pinyin": "diànyuán",
+    "pinyin": "diàn yúan",
     "audio_filename": "clerk",
     "top": "64%",
     "left": "77%",
@@ -62,7 +62,7 @@
     {
     "chinese_word": "水果",
     "english_word": "fruit",
-    "pinyin": "shuǐguǒ",
+    "pinyin": "shuǐ guǒ",
     "audio_filename": "fruit",
     "top": "86%",
     "left": "15%",
@@ -73,7 +73,7 @@
     {
     "chinese_word": "蔬菜",
     "english_word": "vegetable",
-    "pinyin": "shūcài",
+    "pinyin": "shū cài",
     "audio_filename": "vegetable",
     "top": "91%",
     "left": "30%",
@@ -84,7 +84,7 @@
     {
     "chinese_word": "牛奶",
     "english_word": "milk",
-    "pinyin": "niúnǎi",
+    "pinyin": "niú nǎi",
     "audio_filename": "milk",
     "top": "55%",
     "left": "72%",
@@ -95,7 +95,7 @@
     {
     "chinese_word": "面包",
     "english_word": "bread",
-    "pinyin": "miànbāo",
+    "pinyin": "miàn bāo",
     "audio_filename": "bread",
     "top": "61%",
     "left": "72%",
@@ -106,7 +106,7 @@
     {
     "chinese_word": "零食",
     "english_word": "snack",
-    "pinyin": "língshí",
+    "pinyin": "líng shí",
     "audio_filename": "snack",
     "top": "62%",
     "left": "86%",
@@ -117,7 +117,7 @@
     {
     "chinese_word": "购物篮",
     "english_word": "shopping basket",
-    "pinyin": "gòuwùlán",
+    "pinyin": "gòu wù lán",
     "audio_filename": "shopping_basket",
     "top": "88%",
     "left": "72%",
@@ -128,7 +128,7 @@
     {
     "chinese_word": "条形码扫描仪",
     "english_word": "barcode scanner",
-    "pinyin": "tiáoxíngmǎsǎomiáoyí",
+    "pinyin": "tiáo xíng mǎ sǎo miáo yí",
     "audio_filename": "barcode_scanner",
     "top": "68%",
     "left": "69%",
@@ -139,7 +139,7 @@
     {
     "chinese_word": "入口",
     "english_word": "entrance",
-    "pinyin": "rùkǒu",
+    "pinyin": "rù kǒu",
     "audio_filename": "entrance",
     "top": "48%",
     "left": "12%",
@@ -150,7 +150,7 @@
     {
     "chinese_word": "出口",
     "english_word": "exit",
-    "pinyin": "chūkǒu",
+    "pinyin": "chū kǒu",
     "audio_filename": "exit",
     "top": "49%",
     "left": "38%",
@@ -161,7 +161,7 @@
     {
     "chinese_word": "指示牌",
     "english_word": "signpost",
-    "pinyin": "zhǐshìpái",
+    "pinyin": "zhǐ shì pái",
     "audio_filename": "signpost",
     "top": "50%",
     "left": "80%",
